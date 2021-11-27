@@ -17,11 +17,12 @@ export class Users extends Service {
         this.app = app;
     }
 
-    find(params: Params): any {
+    async find(params: Params): Promise<any> {
         if (!params.authenticated) {
             return Res.forbiddenWithText("Token is missing/invalid.");
         }
-        return App.getConnection().getRepository(User).find();
+        const users = await App.getConnection().getRepository(User).find();
+        return Res.success(users);
     }
 
     async create(data: any, params: Params): Promise<any> {
@@ -35,7 +36,7 @@ export class Users extends Service {
         let password = data.password 
 
         if (!email || !username || !password) {
-            return Res.forbiddenWithText("Email, username and password have to be defined.");
+            return Res.bad_request("Email, username and password have to be defined.");
         }
 
         password = await bcrypt.hash(password, 10);
@@ -46,6 +47,8 @@ export class Users extends Service {
         user.email = email;
         user.username = username;
         user.password = password;
+        user.issues = [];
+        user.workspaces = [];
 
         await repository.save(user);
 

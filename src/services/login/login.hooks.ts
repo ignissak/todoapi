@@ -23,7 +23,7 @@ export default {
 	},
 
 	error: {
-		all: [ sendError ],
+		all: [],
 		find: [],
 		get: [],
 		create: [],

@@ -35,6 +35,8 @@ export async function isLogged(context: HookContext) {
                     context.params.authenticated = true
                 }
 
+                context.params.email = decoded.email;
+
                 return context;
             })
         }

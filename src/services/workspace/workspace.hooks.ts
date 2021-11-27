@@ -1,12 +1,11 @@
-import { findUser } from '../../hooks/find.user';
-import { isLogged } from '../../hooks/islogged';
+import { isLogged } from "../../hooks/islogged";
 
 export default {
-	before: {
+    before: {
 		all: [],
 		find: [ isLogged ],
 		get: [],
-		create: [ findUser ], // Check if this user isn't already created
+		create: [ isLogged ], 
 		update: [],
 		patch: [],
 		remove: []
@@ -31,4 +30,4 @@ export default {
 		patch: [],
 		remove: []
 	}
-};
+}

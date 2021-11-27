@@ -15,7 +15,7 @@ export async function login(context: HookContext) {
     let password = data.password;
 
     if (!email || !password) {
-        result.data = Res.forbiddenWithText("Email or password is missing.");
+        result.data = Res.bad_request("Email or password is missing.");
         return result;    
     }
 
