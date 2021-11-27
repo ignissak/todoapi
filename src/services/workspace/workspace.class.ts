@@ -1,4 +1,5 @@
 import { Application, Id, NullableId, Params } from "@feathersjs/feathers";
+import { response } from "express";
 import { Service } from "feathers-memory";
 import { isNumberObject } from "util/types";
 import { App } from "../../app";
@@ -32,7 +33,13 @@ export class Workspaces extends Service {
             return Res.errorWithText("Could not retrieve user."); // How could this happen, lol?
         }
 
-        return Res.success(user.workspaces);
+        const response: any = [];
+
+        user.workspaces.forEach(w => {
+            response.push({'id': w.id, 'name': w.name})
+        })
+
+        return Res.success(response);
     }
 
     /**
@@ -53,7 +60,7 @@ export class Workspaces extends Service {
             return Res.not_found();
         }
 
-        return Res.success(workspace);
+        return Res.success({'id': workspace.id, 'name': workspace.name});
     }
 
     /**

@@ -24,9 +24,6 @@ export class Issue {
     @ManyToOne(type => User, user => user.issues, {lazy: true})
     author!: Promise<User>;
 
-    @Column({default: false})
-    archived!: boolean;
-
     @Column({
         type: "enum",
         enum: IssueState,
