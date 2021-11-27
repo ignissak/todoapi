@@ -8,6 +8,7 @@ import authentication from './authentication';
 import services from './services';
 import { Application } from './declarations';
 import configuration from '@feathersjs/configuration';
+import appHooks from './app.hooks';
 
 export class App {
 
@@ -42,6 +43,8 @@ export class App {
 		//this.express.configure(authentication);
 
 		this.express.configure(services);
+
+		this.express.hooks(appHooks);
 
 		// Add any new real-time connection to the `everybody` channel
 		this.express.on('connection', connection =>
