@@ -77,7 +77,7 @@ export class Issues extends Service {
     }
 
     /**
-     * POSt /issues
+     * POST /issues
      * Required body: workspaceId (string), title (string), text (string)
      * Optional body: deadline (iso date)
      * 
