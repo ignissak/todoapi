@@ -3,7 +3,6 @@ import { Application } from '../../declarations'
 import { ServiceAddons } from "@feathersjs/feathers";
 import { Login } from './login.class';
 import loginHooks from './login.hooks';
-import { login } from '../../hooks/login';
 
 declare module '../../declarations' {
 	interface ServiceTypes {

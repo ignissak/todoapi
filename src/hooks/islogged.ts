@@ -1,10 +1,12 @@
 import { HookContext } from "@feathersjs/feathers";
-import { NextFunction } from "express";
-import { Res } from "../utils/response";
 import * as jwt from 'jsonwebtoken';
 
 const config = require('config');
 
+/**
+ * Checks if there is correct and valid token in request header.
+ * If not, user is not authenticated.
+ */
 export async function isLogged(context: HookContext) {
     if (!context.params.headers) {
         context.params.authenticated = false
