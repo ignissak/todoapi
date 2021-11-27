@@ -27,8 +27,6 @@ export async function login(context: HookContext) {
 
     let encryptedPassword = await fetchPassword(email);
 
-    console.log(encryptedPassword);
-
     if (encryptedPassword === null || encryptedPassword === undefined) {
         result.data = Res.errorWithText("Unknown error while logging in.");
         return result;

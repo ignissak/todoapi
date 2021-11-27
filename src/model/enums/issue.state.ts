@@ -1,5 +1,5 @@
-enum IssueState {
-    ACTIVE,
-    IN_PROGRESS,
-    FINISHED,
+export enum IssueState {
+    OPEN = "open",
+    IN_PROGRESS = "in_progress",
+    FINISHED = "finished",
 }

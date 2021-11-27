@@ -17,27 +17,6 @@ export class Workspaces extends Service {
     }
 
     /**
-     * GET /workspaces/{id}
-     * 
-     * @returns Workspace searched by desired ID
-     */
-    async get(id: Id, params: Params) {
-        if (isNaN(+id)) {
-            return Res.bad_request("ID has not be a number.");
-        }
-        id = <number>id;
-
-        const workspaceRepository = App.getConnection().getRepository(Workspace)
-        const workspace = await workspaceRepository.findOne({ 'id': id });
-
-        if (!workspace) {
-            return Res.not_found();
-        }
-
-        return Res.success(workspace);
-    }
-
-    /**
      * GET /workspaces
      * @returns User's available workspaces
      */
@@ -57,11 +36,32 @@ export class Workspaces extends Service {
     }
 
     /**
+     * GET /workspaces/{id}
+     * 
+     * @returns Workspace searched by desired ID
+     */
+     async get(id: Id, params: Params) {
+        if (isNaN(+id)) {
+            return Res.bad_request("ID has not be a number.");
+        }
+        id = <number>id;
+
+        const workspaceRepository = App.getConnection().getRepository(Workspace)
+        const workspace = await workspaceRepository.findOne({ 'id': id });
+
+        if (!workspace) {
+            return Res.not_found();
+        }
+
+        return Res.success(workspace);
+    }
+
+    /**
      * POST /workspaces
      * Required body: name (string)
      * 
      * Creates workspace for user with desired name.
-     * @returns Object with workspace's ID and name.
+     * @returns Created workspace
      */
     async create(data: any, params: Params): Promise<any> {
         if (!params.authenticated) {
