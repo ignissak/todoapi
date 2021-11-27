@@ -42,26 +42,6 @@ export class Workspaces extends Service {
      * @returns User's available workspaces
      */
     async find(params: Params): Promise<any> {
-        // Deprecated code
-        /*if (params.query) {
-            if (params.query.id) {
-                // User wants to access certain workspace by ID?
-                const id = params.query.id
-
-                if (isNaN(id)) {
-                    return Res.bad_request("ID is not a number.");
-                }
-
-                const workspaceRepository = App.getConnection().getRepository(Workspace)
-                const workspace = await workspaceRepository.findOne({ 'id': id });
-
-                if (!workspace) {
-                    return Res.errorWithText("Could not retrieve workspace.");
-                }
-
-                return Res.success(workspace);
-            }
-        }*/
         if (!params.authenticated) {
             return Res.forbiddenWithText("Token is missing/invalid.");
         }
@@ -168,7 +148,6 @@ export class Workspaces extends Service {
 
         // Checking if user is part of this workspace, 
         // and whether he can rename this workspace.
-
         const workspaceUsers = await workspace.users;
 
         if (!workspaceUsers.some(u => u.id === user.id)) {
