@@ -4,7 +4,7 @@ export default {
     before: {
 		all: [],
 		find: [ isLogged ],
-		get: [ isLogged ],
+		get: [],
 		create: [ isLogged ], 
 		update: [ isLogged ],
 		patch: [],

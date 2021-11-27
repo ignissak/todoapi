@@ -1,5 +1,4 @@
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { ExclusionMetadata } from "typeorm/metadata/ExclusionMetadata";
 import { Issue } from "./issue.model";
 import { Workspace } from "./workspace.model";
 

@@ -36,7 +36,7 @@ export class Users extends Service {
         let password = data.password 
 
         if (!email || !username || !password) {
-            return Res.bad_request("Email, username and password have to be defined.");
+            return Res.property_required("Email, username and password have to be defined.");
         }
 
         password = await bcrypt.hash(password, 10);
@@ -52,7 +52,7 @@ export class Users extends Service {
 
         await repository.save(user);
 
-        return Res.success(user);
+        return Res.success({'id': user.id, 'email': email, 'username': username});
     }
 
 }

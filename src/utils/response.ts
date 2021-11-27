@@ -6,8 +6,8 @@ export namespace Res {
 		return Promise.resolve({
 			status: 404,
 			success: false,
-			error: 'Not found!',
-			data: []
+			error: 'Not found.',
+			result: []
 		});
 	}
 
@@ -16,7 +16,7 @@ export namespace Res {
 			status: 403,
 			success: false,
 			error: 'Forbidden.',
-			data: []
+			result: []
 		})
 	}
 
@@ -25,7 +25,7 @@ export namespace Res {
 			status: 403,
 			success: false,
 			error: property,
-			data: []
+			result: []
 		})
 	}
 
@@ -34,24 +34,24 @@ export namespace Res {
 			status: 500,
 			success: false,
 			error: 'Request Body is missing.',
-			data: []
+			result: []
 		});
 	}
 
-	export function success(object: Object) {
+	export async function success(object: Object) {
 		return Promise.resolve({
 			status: 200,
 			success: true,
-			data: object
+			result: object
 		})
 	}
 
-	export function property_required(property: String) {
+	export function property_required(...properties: string[]) {
 		return Promise.resolve({
 			status: 400,
 			success: false,
-			error: 'Property ' + property + ' is required.',
-			data: []
+			error: 'Properties ' + properties.join(", ") + ' are required.',
+			result: []
 		})
 	}
 
@@ -60,7 +60,7 @@ export namespace Res {
 			status: 400,
 			success: false,
 			error: message,
-			data: []
+			result: []
 		});
 	}
 
@@ -69,7 +69,7 @@ export namespace Res {
 			status: 500,
 			success: false,
 			error: err.message,
-			data: []
+			result: []
 		});
 	}
 
@@ -78,7 +78,7 @@ export namespace Res {
 			status: 500,
 			success: false,
 			error: err,
-			data: []
+			result: []
 		});
 	}
 }

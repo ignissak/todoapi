@@ -11,9 +11,9 @@ export class Workspace {
     @Column()
     name!: string;
 
-    @OneToMany(type => Issue, issue => issue.workspace, {eager: true})
+    @OneToMany(type => Issue, issue => issue.workspace, {eager: true, cascade: true})
     issues!: Issue[];
 
-    @ManyToMany(type => User, user => user.workspaces)
-    users!: User[];
+    @ManyToMany(type => User, user => user.workspaces, {lazy: true})
+    users!: Promise<User[]>;
 }
