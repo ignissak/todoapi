@@ -11,7 +11,7 @@ export class Workspace {
     @Column()
     name!: string;
 
-    @OneToMany(type => Issue, issue => issue.workspace)
+    @OneToMany(type => Issue, issue => issue.workspace, {eager: true})
     issues!: Issue[];
 
     @ManyToMany(type => User, user => user.workspaces)

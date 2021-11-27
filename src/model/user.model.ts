@@ -18,10 +18,11 @@ export class User {
     @Column()
     password!: string;
 
-    @ManyToMany(type => Workspace, workspace => workspace.users)
+    @ManyToMany(type => Workspace, workspace => workspace.users, {eager: true})
     @JoinTable()
-    workspaces!: Workspace[];
+    workspaces!: Workspace[]
 
-    @OneToMany(type => Issue, issue => issue.author)
-    issues!: Issue[];
+    @OneToMany(type => Issue, issue => issue.author, {eager: true})
+    @JoinTable()
+    issues!: Issue[]
 }
