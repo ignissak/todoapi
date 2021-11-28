@@ -5,12 +5,12 @@ import { Issues } from './issues.class';
 
 declare module '../../declarations' {
 	interface ServiceTypes {
-		'issues': Issues & ServiceAddons<any>;
+		'api/issues': Issues & ServiceAddons<any>;
 	}
 }
 
 export default function (app: Application): void {
-	app.use('/issues', new Issues(app));
+	app.use('api/issues', new Issues(app));
 
-	app.service('issues').hooks(issuesHooks);
+	app.service('api/issues').hooks(issuesHooks);
 }

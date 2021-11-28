@@ -6,12 +6,12 @@ import loginHooks from './login.hooks';
 
 declare module '../../declarations' {
 	interface ServiceTypes {
-		'login': Login & ServiceAddons<any>;
+		'api/login': Login & ServiceAddons<any>;
 	}
 }
 
 export default function (app: Application): void {
-	app.use('/login', new Login(app));
+	app.use('api/login', new Login(app));
 
-	app.service('login').hooks(loginHooks);
+	app.service('api/login').hooks(loginHooks);
 }

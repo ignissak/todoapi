@@ -5,12 +5,12 @@ import { ServiceAddons } from "@feathersjs/feathers";
 
 declare module '../../declarations' {
     interface ServiceTypes {
-      'users': Users & ServiceAddons<any>;
+      'api/users': Users & ServiceAddons<any>;
     }
   }
 
 export default function (app: Application): void {
-    app.use('/users', new Users(app));
+    app.use('api/users', new Users(app));
 
-    app.service('users').hooks(usersHooks);
+    app.service('api/users').hooks(usersHooks);
 }
