@@ -26,7 +26,7 @@ export class Issues extends Service {
      */
     async find(params: Params): Promise<any> {
         if (!params.authenticated) {
-            return Res.forbiddenWithText("Token is missing/invalid.");
+            return Res.unauthorized();
         }
 
         const email = params.email;
@@ -87,7 +87,7 @@ export class Issues extends Service {
      */
     async create(data: any, params: Params): Promise<any> {
         if (!params.authenticated) {
-            return Res.forbiddenWithText("Token is missing/invalid.");
+            return Res.unauthorized();
         }
 
         const email = params.email;
@@ -173,7 +173,7 @@ export class Issues extends Service {
      */
     async update(id: NullableId, data: any, params: Params): Promise<any> {
         if (!params.authenticated) {
-            return Res.forbiddenWithText("Token is missing/invalid.");
+            return Res.unauthorized();
         }
 
         if (id === null) {
@@ -285,7 +285,7 @@ export class Issues extends Service {
      */
     async remove(id: NullableId, params: Params): Promise<any> {
         if (!params.authenticated) {
-            return Res.forbiddenWithText("Token is missing/invalid.");
+            return Res.unauthorized();
         }
 
         let issueId: Id | null = id

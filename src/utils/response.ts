@@ -81,4 +81,13 @@ export namespace Res {
 			result: []
 		});
 	}
+
+	export function unauthorized() {
+		return Promise.resolve({
+			status: 401,
+			success: false,
+			error: 'Unauthorized.',
+			result: []
+		})
+	}
 }

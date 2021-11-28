@@ -19,7 +19,7 @@ export class Users extends Service {
 
     async find(params: Params): Promise<any> {
         if (!params.authenticated) {
-            return Res.forbiddenWithText("Token is missing/invalid.");
+            return Res.unauthorized();
         }
         const users = await App.getConnection().getRepository(User).find();
 

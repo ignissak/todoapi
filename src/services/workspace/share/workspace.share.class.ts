@@ -23,7 +23,7 @@ export default class WorkspaceShareClass extends Service {
 
     async update(id: NullableId, data: any, params: Params): Promise<any> {
         if (!params.authenticated) {
-            return Res.forbiddenWithText("Token is missing/invalid.");
+            return Res.unauthorized();
         }
 
         if (!params.route) {
@@ -102,7 +102,7 @@ export default class WorkspaceShareClass extends Service {
      */
     async remove(id: NullableId, params: Params): Promise<any> {
         if (!params.authenticated) {
-            return Res.forbiddenWithText("Token is missing/invalid.");
+            return Res.unauthorized();
         }
 
         if (!params.route) {
