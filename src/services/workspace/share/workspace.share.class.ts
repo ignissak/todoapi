@@ -141,6 +141,10 @@ export default class WorkspaceShareClass extends Service {
             return Res.not_found();
         }
 
+        if (user.id === userId && (await workspace.users).length === 1) {
+            return Res.forbiddenWithText("You can't leave this workspace unless there is one more user in this workspace.")
+        }
+
         const targetUser = await userRepository.findOne({ id: userId })
 
         if (!targetUser) {
