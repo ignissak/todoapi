@@ -21,7 +21,7 @@ export async function login(context: HookContext) {
 
     let exists = await existsByEmail(email);
     if (!exists) {
-        result.data = Res.forbiddenWithText("Account with this email does not exist.");
+        result.data = Res.unauthorizedWithtext("Account with this email does not exist.");
         return result;
     }
 
@@ -35,7 +35,7 @@ export async function login(context: HookContext) {
     const validPassword = await bcrypt.compare(password, encryptedPassword);
 
     if (!validPassword) {
-        result.data = Res.forbiddenWithText("Invalid password.");
+        result.data = Res.unauthorizedWithtext("Invalid password.");
         return result;
     }
 

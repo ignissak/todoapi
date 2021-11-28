@@ -90,4 +90,13 @@ export namespace Res {
 			result: []
 		})
 	}
+
+	export function unauthorizedWithtext(message: string) {
+		return Promise.resolve({
+			status: 401,
+			success: false,
+			error: message,
+			result: []
+		})
+	}
 }

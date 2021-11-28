@@ -121,7 +121,7 @@ export default class WorkspaceShareClass extends Service {
         }
 
         if (isNaN(+userId)) {
-            return Res.bad_request("UserId must be a number.");
+            return Res.bad_request("ID must be a number.");
         }
         userId = <number>userId;
 
@@ -152,6 +152,10 @@ export default class WorkspaceShareClass extends Service {
 
         if (!workspaceUsers.some(u => u.id === user.id)) {
             return Res.forbidden();
+        }
+
+        if (!workspaceUsers.some(u => u.id === targetUser.id)) {
+            return Res.bad_request("User is not part of this workspace.");
         }
 
         // Remove user from workspace & remove workspace from user

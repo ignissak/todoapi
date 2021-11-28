@@ -99,11 +99,16 @@ export class Issues extends Service {
 
         const workspaceId = data.workspaceId;
         const title = data.title;
-        const text = data.text;
+        let text = data.text;
         let deadline = data.deadline;
 
-        if (!workspaceId || !title || !text) {
-            return Res.property_required("worskspaceId", "title", "text");
+        if (!workspaceId || !title) {
+            return Res.property_required("worskspaceId", "title");
+        }
+
+        // Optional text
+        if (!text) {
+            text = "";
         }
 
         // Parsing optional deadline
@@ -201,10 +206,15 @@ export class Issues extends Service {
 
         const oldIssue = Object.assign(Object.create(Object.getPrototypeOf(issue)), issue)
 
-        const newWorkspaceId = data.newWorkspaceId;
+        let newWorkspaceId = data.newWorkspaceId;
 
         // Change workspace
         if (newWorkspaceId) {
+            if (isNaN(+newWorkspaceId)) {
+                return Res.bad_request("ID must be a number.");
+            }
+            newWorkspaceId = <number>newWorkspaceId;
+            
             const workspaceRepository = App.getConnection().getRepository(Workspace)
             const workspace = await workspaceRepository.findOne({ 'id': newWorkspaceId })
 

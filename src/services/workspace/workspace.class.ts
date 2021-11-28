@@ -126,7 +126,7 @@ export class Workspaces extends Service {
         }
 
         if (id === null) {
-            return Res.bad_request("ID cannot be null.");
+            return Res.bad_request("ID must be a number.");
         }
 
         if (isNaN(+id)) {
