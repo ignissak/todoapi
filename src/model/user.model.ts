@@ -21,7 +21,7 @@ export class User {
     @JoinTable()
     workspaces!: Workspace[]
 
-    @OneToMany(type => Issue, issue => issue.author, {eager: true})
+    @OneToMany(type => Issue, issue => issue.author, {eager: true, cascade: true})
     @JoinTable()
     issues!: Issue[]
 }

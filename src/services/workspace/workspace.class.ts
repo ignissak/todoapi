@@ -3,6 +3,7 @@ import { response } from "express";
 import { Service } from "feathers-memory";
 import { isNumberObject } from "util/types";
 import { App } from "../../app";
+import { Issue } from "../../model/issue.model";
 import { User } from "../../model/user.model";
 import { Workspace } from "../../model/workspace.model";
 import { Res } from "../../utils/response";
@@ -49,7 +50,7 @@ export class Workspaces extends Service {
      */
      async get(id: Id, params: Params) {
         if (isNaN(+id)) {
-            return Res.bad_request("ID has not be a number.");
+            return Res.bad_request("ID must be a number.");
         }
         id = <number>id;
 
@@ -129,7 +130,7 @@ export class Workspaces extends Service {
         }
 
         if (isNaN(+id)) {
-            return Res.bad_request("ID has not be a number.");
+            return Res.bad_request("ID must be a number.");
         }
         id = <number>id;
 
@@ -167,6 +168,55 @@ export class Workspaces extends Service {
         workspaceRepository.save(workspace);
 
         return Res.success({ id: workspace.id, 'oldName': oldName, 'newName': newName });
+    }
+
+    /**
+     * DELETE workspaces/{id}
+     * 
+     * Removes whole workspace and it's issues.
+     */
+    async remove(id: NullableId, params: Params) {
+        if (!params.authenticated) {
+            return Res.forbiddenWithText("Token is missing/invalid.");
+        }
+
+        let workspaceId: Id | null = id
+        if (workspaceId === null) {
+            return Res.not_found();
+        }
+
+        if (isNaN(+workspaceId)) {
+            return Res.bad_request("ID must be a number.");
+        }
+        workspaceId = <number>workspaceId;
+
+        const email = params.email;
+        const user = await App.getConnection().getRepository(User).findOne({ 'email': email });
+
+        if (!user) {
+            return Res.errorWithText("Could not retrieve user."); // How could this happen, lol?
+        }
+
+        const workspaceRepository = App.getConnection().getRepository(Workspace);
+        const workspace = await workspaceRepository.findOne({id: workspaceId});
+
+        if (!workspace) {
+            return Res.not_found();
+        }
+
+        // Checking if user is part of this workspace.
+        let workspaceUsers = await workspace.users;
+
+        if (!workspaceUsers.some(u => u.id === user.id)) {
+            return Res.forbidden();
+        }
+
+        const issuesRepository = App.getConnection().getRepository(Issue);
+        await issuesRepository.remove(workspace.issues);
+
+        await workspaceRepository.remove(workspace);
+
+        return Res.success([]);
     }
 
 }

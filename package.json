@@ -21,6 +21,7 @@
     "bcrypt": "^5.0.1",
     "config": "^3.3.6",
     "feathers-memory": "^4.1.0",
+    "feathers-swagger": "^1.2.1",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",

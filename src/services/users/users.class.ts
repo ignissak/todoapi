@@ -22,7 +22,16 @@ export class Users extends Service {
             return Res.forbiddenWithText("Token is missing/invalid.");
         }
         const users = await App.getConnection().getRepository(User).find();
-        return Res.success(users);
+
+        const result: {[key: string]: any} = [];
+        users.forEach(user => {
+            result.push({
+                'id': user.id,
+                'username': user.username,
+                'email': user.email
+            })
+        })
+        return Res.success(result);
     }
 
     async create(data: any, params: Params): Promise<any> {

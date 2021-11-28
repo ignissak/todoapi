@@ -46,7 +46,7 @@ export class Issues extends Service {
      */
     async get(id: Id, params: Params): Promise<any> {
         if (isNaN(+id)) {
-            return Res.bad_request("ID has not be a number.");
+            return Res.bad_request("ID must be a number.");
         }
         id = <number>id;
 
@@ -121,8 +121,7 @@ export class Issues extends Service {
             return Res.not_found();
         }
 
-        // Checking if user is part of this workspace, 
-        // and whether he can rename this workspace.
+        // Checking if user is part of this workspace.
         const workspaceUsers = await workspace.users;
 
         if (!workspaceUsers.some(u => u.id === user.id)) {
@@ -146,8 +145,6 @@ export class Issues extends Service {
         await issuesRepository.save(issue);
         await workspaceRepository.save(workspace);
         await userRepository.save(user);
-
-        console.log(issue);
 
         return Res.success(
             {
@@ -184,7 +181,7 @@ export class Issues extends Service {
         }
 
         if (isNaN(+id)) {
-            return Res.bad_request("ID has not be a number.");
+            return Res.bad_request("ID must be a number.");
         }
         id = <number>id;
 
@@ -215,21 +212,18 @@ export class Issues extends Service {
                 return Res.bad_request("Invalid workspace ID.");
             }
 
-            // Checking if user is part of this workspace, 
-            // and whether he can rename this workspace.
+            // Checking if user is part of this workspace.
             const workspaceUsers = await workspace.users;
 
             if (!workspaceUsers.some(u => u.id === user.id)) {
-                return Res.forbiddenWithText("You cannot move issue to this workspace.");
+                return Res.forbidden();
             }
 
             const oldWorkspace = await issue.workspace;
 
-            console.log(oldWorkspace);
-
             // Filter out issue in old workspace
             //oldWorkspace.issues = oldWorkspace.issues.filter(item => item.id !== issue.id);
-            
+
             issue.workspace = Promise.resolve(workspace);
             workspace.issues.push(issue);
 
@@ -261,7 +255,7 @@ export class Issues extends Service {
 
         return Res.success({
             'id': issue.id,
-            'oldIssue': {
+            'oldIssue': {
                 'workspace': {
                     'id': (await oldIssue.workspace).id,
                     'name': (await oldIssue.workspace).name
@@ -282,5 +276,54 @@ export class Issues extends Service {
                 'state': issue.state
             }
         })
+    }
+
+    /**
+     * DELELE /issues/{id}
+     * 
+     * Deletes issue by ID.
+     */
+    async remove(id: NullableId, params: Params): Promise<any> {
+        if (!params.authenticated) {
+            return Res.forbiddenWithText("Token is missing/invalid.");
+        }
+
+        let issueId: Id | null = id
+        if (issueId === null) {
+            return Res.not_found();
+        }
+
+        if (isNaN(+issueId)) {
+            return Res.bad_request("ID must be a number.");
+        }
+        issueId = <number>issueId;
+
+        const email = params.email;
+        const user = await App.getConnection().getRepository(User).findOne({ 'email': email });
+
+        if (!user) {
+            return Res.errorWithText("Could not retrieve user."); // How could this happen, lol?
+        }
+
+        const issuesRepository = App.getConnection().getRepository(Issue);
+        const issue = await issuesRepository.findOne({ id: issueId })
+
+        if (!issue) {
+            return Res.not_found();
+        }
+
+        const issueWorkspace = await issue.workspace;
+
+        // Checking if user is part of this workspace,
+        // or author of the issue.
+        let workspaceUsers = await issueWorkspace.users;
+
+        if (!workspaceUsers.some(u => u.id === user.id) && (await issue.author).id !== user.id) {
+            return Res.forbidden();
+        }
+
+        await issuesRepository.remove(issue);
+
+        return Res.success([]);
     }
 }

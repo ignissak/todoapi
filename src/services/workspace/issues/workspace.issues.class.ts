@@ -19,14 +19,13 @@ export default class WorkspaceIssuesClass extends Service {
      * @returns Workspace's issues
      */
     async find(params: Params): Promise<any> {
-        console.log(params);
         if (!params.route) {
             return Res.not_found();
         }
 
         const workspaceId = params.route.workspaceId
         if (isNaN(+workspaceId)) {
-            return Res.bad_request("ID has not be a number.");
+            return Res.bad_request("ID must be a number.");
         }
         const id = parseInt(workspaceId);
 

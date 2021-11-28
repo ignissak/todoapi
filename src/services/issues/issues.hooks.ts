@@ -8,7 +8,7 @@ export default {
 		create: [ isLogged ], 
 		update: [ isLogged ],
 		patch: [],
-		remove: []
+		remove: [ isLogged ]
 	},
 
 	after: {
