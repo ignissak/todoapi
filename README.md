@@ -1,5 +1,7 @@
 # TodoAPI
 
+**TodoAPI** is simple REST API written in [featherjs](https://github.com/feathersjs/feathers) and TypeScript. API supports local authentication using user acocunts (JWT).
+
 ## Installing & running
 
 ```bash
