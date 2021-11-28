@@ -31,6 +31,7 @@ export async function isLogged(context: HookContext) {
             jwt.verify(token, config.get("authentication.secret"), (err: any, decoded: any | string) => {
                 if (err) {
                     context.params.authenticated = false
+                    return context;
                 } else {
                     context.params.authenticated = true
                 }

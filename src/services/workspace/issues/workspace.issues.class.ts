@@ -14,15 +14,21 @@ export default class WorkspaceIssuesClass extends Service {
     }
 
     /**
-     * GET /workspaces/issues/{id}
+     * GET /workspaces/{id}/issues
      * 
      * @returns Workspace's issues
      */
-    async get(id: Id, params: Params): Promise<any> {
-        if (isNaN(+id)) {
+    async find(params: Params): Promise<any> {
+        console.log(params);
+        if (!params.route) {
+            return Res.not_found();
+        }
+
+        const workspaceId = params.route.workspaceId
+        if (isNaN(+workspaceId)) {
             return Res.bad_request("ID has not be a number.");
         }
-        id = <number>id;
+        const id = parseInt(workspaceId);
 
         const workspaceRepository = App.getConnection().getRepository(Workspace)
         const workspace = await workspaceRepository.findOne({ 'id': id });

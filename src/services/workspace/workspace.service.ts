@@ -12,7 +12,7 @@ declare module '../../declarations' {
 
 export default function (app: Application): void {
     app.use('/workspaces', new Workspaces(app));
-    app.use('/workspaces/issues', new WorkspaceIssuesClass(app));
+    app.use('/workspaces/:workspaceId/issues', new WorkspaceIssuesClass(app));
 
     app.service('workspaces').hooks(workspaceHooks);
 }
